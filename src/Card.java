@@ -14,7 +14,7 @@ public class Card {
     private BufferedImage image;
     private Rectangle cardBox;
     private boolean highlight;
-    public static ArrayList<Card> cards = new ArrayList<>();
+    public static ArrayList<Card> hand = new ArrayList<>();
     public static ArrayList<Card> deck = new ArrayList<>();
     public static ArrayList<Card> replacedCards = new ArrayList<>();
 
@@ -95,6 +95,7 @@ public class Card {
     }
 
     public static ArrayList<Card> buildDeck() {
+        deck = new ArrayList<>();
         ArrayList<Card> deck = new ArrayList<Card>();
         String[] suits = {"clubs", "diamonds", "hearts", "spades"};
         String[] values = {"02", "03", "04", "05", "06", "07", "08", "09", "10", "A", "J", "K", "Q"};
@@ -115,17 +116,50 @@ public class Card {
             int r = (int)(Math.random()*deck.size());
             Card c = deck.remove(r);
             hand.add(c);
-            cards.add(c);
+            Card.hand.add(c);
+        }
+        for (int i = 0; i < Card.hand.size(); i++) {
+            Card.deck.remove(Card.hand.get(i));
         }
         return hand;
     }
     public static Card randomCard() {
-        for (int i = 0; i < cards.size(); i++) {
-            deck.remove(cards.get(i));
-        }
+
             int r = (int)(Math.random()*deck.size());
             Card c = deck.remove(r);
+            hand.add(c);
             replacedCards.add(c);
             return c;
     }
+
+    public static boolean eliminateNumbers(){
+        boolean lose = false;
+        for (int i = 0; i < hand.size(); i++) {
+            for (int j = i+1; j < hand.size(); j++) {
+                Card card1 = hand.get(i);
+                Card card2 = hand.get(j);
+                   try {
+                       if (Integer.parseInt(card1.getValue()) + Integer.parseInt(card2.getValue()) == 11) {
+                           lose = false;
+                       } else
+                           lose = true;
+                   } catch (Exception e){
+                       lose = false;
+                   }
+            }
+        }
+        return lose;
+    }
+
+    public static boolean haveCards()
+    {
+        if (cardsInDeck()==0){
+            return false;
+        }
+        return true;
+    }
+    public static int cardsInDeck(){
+        return deck.size();
+    }
+
 }

@@ -26,19 +26,21 @@ class DrawPanel extends JPanel implements MouseListener {
         int y = 10;
         for (int i = 0; i < hand.size(); i++) {
             Card c = hand.get(i);
-            if (c.getHighlight()) {
-                // draw the border rectangle around the card
-                g.drawRect(x, y, c.getImage().getWidth(), c.getImage().getHeight());
-            }
-            // establish the location of the rectangle "hitbox"
-            c.setRectangleLocation(x, y);
-
             // puts it in a 3 by 3 grid
             if (i % 3 == 0 && i != 0)
             {
                 y = y + c.getImage().getWidth() + 10;
                 x = 135;
             }
+
+            if (c.getHighlight()) {
+                // draw the border rectangle around the card
+                g.drawRect(x, y, c.getImage().getWidth(), c.getImage().getHeight());
+            }
+
+
+            // establish the location of the rectangle "hitbox"
+            c.setRectangleLocation(x, y);
 
             g.drawImage(c.getImage(), x, y, null);
             x = x + c.getImage().getWidth() + 10;
@@ -49,8 +51,19 @@ class DrawPanel extends JPanel implements MouseListener {
         // drawing the bottom button
         // with my favorite font
         g.setFont(new Font("Courier New", Font.BOLD, 20));
-        g.drawString("GET NEW CARDS", 150, 280);
+        g.drawString("Play Again", 150, 280);
         g.drawRect((int)button.getX(), (int)button.getY(), (int)button.getWidth(), (int)button.getHeight());
+
+        g.drawString("Cards left:", 140, 340);
+
+        g.drawString(" " + Card.cardsInDeck(), 280, 340);
+
+        if (Card.eliminateNumbers()){
+            g.drawString("No available moves! Game over", 100, 440);
+        }
+        if (!Card.haveCards()){
+            g.drawString("you win", 100, 390);
+        }
     }
 
     public void mousePressed(MouseEvent e) {
@@ -63,6 +76,7 @@ class DrawPanel extends JPanel implements MouseListener {
             // aka ---> did you click the button?
             if (button.contains(clicked)) {
                 hand = Card.buildHand();
+
             }
 
             // go through each card
