@@ -49,6 +49,52 @@ public class Card {
         return value;
     }
 
+    public String getSymbolValue(){
+        if (getValue().equals("J")){
+            return "J";
+        }
+        if (getValue().equals("K")){
+            return "K";
+        }
+        if (getValue().equals("Q")){
+            return "Q";
+        }
+        return null;
+    }
+    public int getIntValue() {
+        if (getValue().equals("01")){
+            return 1;
+        }
+        if (getValue().equals("02")){
+            return 2;
+        }
+        if (getValue().equals("03")){
+            return 3;
+        }
+        if (getValue().equals("04")){
+            return 4;
+        }
+        if (getValue().equals("05")){
+            return 5;
+        }
+        if (getValue().equals("06")){
+            return 6;
+        }
+        if (getValue().equals("07")){
+            return 7;
+        }
+        if (getValue().equals("08")){
+            return 8;
+        }
+        if (getValue().equals("09")){
+            return 9;
+        }
+        if (getValue().equals("10")){
+            return 10;
+        }
+        return 0;
+    }
+
     public String getImageFileName() {
         return imageFileName;
     }
@@ -134,22 +180,57 @@ public class Card {
 
     public static boolean eliminateNumbers(){
         boolean lose = false;
-        for (int i = 0; i < hand.size(); i++) {
+        int value1 = 0;
+        while (!lose){
+            for (int i = 0; i < hand.size(); i++) {
+            value1 = 0;
+            Card card1 = hand.get(i);
+            if(card1.getValue().equals("A")) {
+                value1 = 1;
+            }else if (card1.getIntValue() > 0){
+                value1 = Integer.parseInt(card1.getValue());
+            }
             for (int j = i+1; j < hand.size(); j++) {
-                Card card1 = hand.get(i);
                 Card card2 = hand.get(j);
-                   try {
-                       if (Integer.parseInt(card1.getValue()) + Integer.parseInt(card2.getValue()) == 11) {
-                           lose = false;
-                       } else
-                           lose = true;
-                   } catch (Exception e){
-                       lose = false;
-                   }
+                int value2 = 0;
+                if (card2.getValue().equals("A")){
+                    value2 = 1;
+                } else if (card2.getIntValue() > 0){
+                    value2 = Integer.parseInt(card2.getValue());
+                }
+
+                if (value1 + value2 == 11){
+                    lose = false;
+                    System.out.println("value 2: "+ value2);
+                    System.out.println("value 1: "+value1);
+                } else if (j < hand.size()) {
+                    lose = true;
+                }
+            }
             }
         }
         return lose;
     }
+
+    public static boolean eliminateSymbols(){
+        boolean lose = false;
+        for (int i = 0; i < hand.size(); i++) {
+            for (int j = i+1; j < hand.size(); j++) {
+                Card card1 = hand.get(i);
+                Card card2 = hand.get(j);
+                try {
+                    if (Integer.parseInt(card1.getValue()) + Integer.parseInt(card2.getValue()) == 11) {
+                        lose = false;
+                    } else
+                        lose = true;
+                } catch (Exception e){
+                    lose = false;
+                }
+            }
+        }
+        return lose;
+    }
+
 
     public static boolean haveCards()
     {

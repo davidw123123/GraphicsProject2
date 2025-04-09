@@ -58,7 +58,7 @@ class DrawPanel extends JPanel implements MouseListener {
 
         g.drawString(" " + Card.cardsInDeck(), 280, 340);
 
-        if (Card.eliminateNumbers()){
+        if (Card.eliminateNumbers() == false){
             g.drawString("No available moves! Game over", 100, 440);
         }
         if (!Card.haveCards()){
