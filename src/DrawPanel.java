@@ -13,9 +13,11 @@ class DrawPanel extends JPanel implements MouseListener {
 
     // Rectangle object represents
     private Rectangle button;
+    private Rectangle button2;
 
     public DrawPanel() {
         button = new Rectangle(145, 260, 160, 26);
+        button2 = new Rectangle(140, 350, 160, 26);
         this.addMouseListener(this);
         hand = Card.buildHand();
     }
@@ -49,7 +51,6 @@ class DrawPanel extends JPanel implements MouseListener {
         }
 
         // drawing the bottom button
-        // with my favorite font
         g.setFont(new Font("Courier New", Font.BOLD, 20));
         g.drawString("Play Again", 150, 280);
         g.drawRect((int)button.getX(), (int)button.getY(), (int)button.getWidth(), (int)button.getHeight());
@@ -58,12 +59,16 @@ class DrawPanel extends JPanel implements MouseListener {
 
         g.drawString(" " + Card.cardsInDeck(), 280, 340);
 
+
         if (Card.eliminateNumbers() == false){
             g.drawString("No available moves! Game over", 100, 440);
         }
         if (!Card.haveCards()){
             g.drawString("you win", 100, 390);
         }
+        g.drawString("Replace Cards", 140, 370 );
+        g.drawRect((int)button2.getX(), (int)button2.getY(), (int)button2.getWidth(), (int)button2.getHeight());
+
     }
 
     public void mousePressed(MouseEvent e) {
@@ -76,7 +81,16 @@ class DrawPanel extends JPanel implements MouseListener {
             // aka ---> did you click the button?
             if (button.contains(clicked)) {
                 hand = Card.buildHand();
-
+            }
+            if (button2.contains(clicked)){
+                for (int i = 0; i < hand.size(); i++) {
+                    for (int j = i+1; j < hand.size(); j++) {
+                        if (hand.get(i).getHighlight() && hand.get(j).getHighlight()){
+                            hand.set(i, Card.randomCard());
+                            hand.set(j, Card.randomCard());
+                        }
+                    }
+                }
             }
 
             // go through each card

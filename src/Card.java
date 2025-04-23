@@ -62,7 +62,7 @@ public class Card {
         return null;
     }
     public int getIntValue() {
-        if (getValue().equals("01")){
+        if (getValue().equals("A")){
             return 1;
         }
         if (getValue().equals("02")){
@@ -179,37 +179,51 @@ public class Card {
     }
 
     public static boolean eliminateNumbers(){
-        boolean lose = false;
-        int value1 = 0;
-        while (!lose){
-            for (int i = 0; i < hand.size(); i++) {
-            value1 = 0;
-            Card card1 = hand.get(i);
-            if(card1.getValue().equals("A")) {
-                value1 = 1;
-            }else if (card1.getIntValue() > 0){
-                value1 = Integer.parseInt(card1.getValue());
-            }
-            for (int j = i+1; j < hand.size(); j++) {
-                Card card2 = hand.get(j);
-                int value2 = 0;
-                if (card2.getValue().equals("A")){
-                    value2 = 1;
-                } else if (card2.getIntValue() > 0){
-                    value2 = Integer.parseInt(card2.getValue());
-                }
+//        boolean lose = false;
+//        int value1 = 0;
+//        while (!lose){
+//            for (int i = 0; i < hand.size(); i++) {
+//            value1 = 0;
+//            Card card1 = hand.get(i);
+//            if(card1.getValue().equals("A")) {
+//                value1 = 1;
+//            }else if (card1.getIntValue() > 0){
+//                value1 = Integer.parseInt(card1.getValue());
+//            }
+//            for (int j = i+1; j < hand.size(); j++) {
+//                Card card2 = hand.get(j);
+//                int value2 = 0;
+//                if (card2.getValue().equals("A")){
+//                    value2 = 1;
+//                } else if (card2.getIntValue() > 0){
+//                    value2 = Integer.parseInt(card2.getValue());
+//                }
+//
+//                if (value1 + value2 == 11){
+//                    lose = false;
+//                    System.out.println("value 2: "+ value2);
+//                    System.out.println("value 1: "+value1);
+//                } else if (j < hand.size()) {
+//                    lose = true;
+//                }
+//            }
+//            }
+//        }
+//        return lose;
 
+        boolean elimnateNums = false;
+        for (int i = 0; i < hand.size(); i++) {
+            int value1 = hand.get(i).getIntValue();
+            for (int j = i+1; j < hand.size(); j++) {
+                int value2 = hand.get(j).getIntValue();
                 if (value1 + value2 == 11){
-                    lose = false;
-                    System.out.println("value 2: "+ value2);
-                    System.out.println("value 1: "+value1);
-                } else if (j < hand.size()) {
-                    lose = true;
-                }
-            }
+                    elimnateNums = true;
+                    return elimnateNums;
+
+                } else elimnateNums = false;
             }
         }
-        return lose;
+        return elimnateNums;
     }
 
     public static boolean eliminateSymbols(){
